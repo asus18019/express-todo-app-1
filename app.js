@@ -1,20 +1,28 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const express = require('express');
+const mongoose = require('mongoose');
 
-var indexRouter = require('./routes/index');
-var quotesRouter = require('./routes/quotes');
+const app = express();
+const port = 3000;
 
-var app = express();
+app.use(express.urlencoded({ extended: true }));
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/api', require('./routes/item.routes'));
 
-app.use('/', indexRouter);
-app.use('/quotes', quotesRouter);
+const start = async () => {
+    try {
+        await mongoose.connect('mongodb+srv://Admin:11qqaa@cluster0.huyrw.mongodb.net/garbage?retryWrites=true&w=majority', {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            useCreateIndex: true,
+            useFindAndModify: true
+        }).then(() => {
+            app.listen(port, () => {
+                console.log(`Server has been started on port ${port}...`)
+            });
+        })
+    } catch (e) {
+        console.log(e);
+    }
+}
 
-module.exports = app;
+start();
