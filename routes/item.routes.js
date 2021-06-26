@@ -36,7 +36,12 @@ router.delete('/remove', async (req,res) => {
 })
 
 const getDate = () => {
-    return new Date().toString().substring(0, 24);
+    return new Date().addHours(3).toString().substring(0, 24);
+}
+
+Date.prototype.addHours= function(h){
+    this.setHours(this.getHours()+h);
+    return this;
 }
 
 module.exports = router;
