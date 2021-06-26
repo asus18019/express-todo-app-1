@@ -4,7 +4,7 @@ const Item = require('../models/item');
 
 router.get('/', async (req, res) => {
     try {
-        res.json(await Item.find())
+        res.json(await Item.find().sort({_id : -1}))
     } catch (e) {
         return res.status(400).json(e);
     }
